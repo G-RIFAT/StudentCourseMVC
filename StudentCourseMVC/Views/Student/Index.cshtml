@@ -1,0 +1,71 @@
+﻿@model IEnumerable<StudentCourseMVC.Models.StudentEntity>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Courses</h1>
+<div class="col-md-6">
+    <form asp-action="Index" method="get" class="mt-0">
+        <div class="form-group">
+            <label for="statusFilter">Filter by Status:</label>
+            <select id="statusFilter" name="statusFilter" class="form-control">
+                <option value="">All Statuses</option>
+                @foreach (var status in Enum.GetValues(typeof(StudentCourseMVC.Models.StudentEntity.StatusEnum)).Cast<StudentCourseMVC.Models.StudentEntity.StatusEnum>())
+                {
+                    <option value="@status">@status</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-secondary mt-2">Filter</button>
+    </form>
+</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourseTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalMarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalMarks)
+            </td>
+                <td style="color:@(
+                    item.Status == StudentEntity.StatusEnum.NeedsImprovement ? "#dc3545" :
+                    item.Status == StudentEntity.StatusEnum.Good ? "#007bff" :
+                    item.Status == StudentEntity.StatusEnum.Excellent ? "#28a745" : "black"
+)">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+@*             <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td> *@
+        </tr>
+}
+    </tbody>
+</table>
